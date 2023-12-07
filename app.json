@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Rastreamento",
+    "slug": "Rastreamento",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8e204aec-1e3d-4c3a-9939-556b55d4c837"
+      }
+    }
+  },
+  "name": "Rastreamento"
+}
