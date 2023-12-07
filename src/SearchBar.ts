@@ -1,6 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import style from "../src/styles"
+import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
 

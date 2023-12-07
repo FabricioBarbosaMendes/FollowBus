@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
-import styles from "./SearchBar";
-import { Picker } from "@react-native-picker/picker";
+import ModalDropdown from 'react-native-modal-dropdown';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Text } from 'react-native';
+import styles from './styles';
 
 export interface DropdownOptionsProps {
   selectedOption: string | undefined;
@@ -16,14 +16,17 @@ const Dropdown: React.FC<DropdownOptionsProps> = ({
   onValueChange,
 }) => {
   const [options, setOptions] = useState<[string, string][]>([]);
-
+  const [loading, setLoading] = useState(true);
+  const [dropdownText, setdropdownText] = useState<string>()
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const items = await getItems();
         setOptions(items);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setLoading(false);
       }
     };
 
@@ -40,17 +43,43 @@ const Dropdown: React.FC<DropdownOptionsProps> = ({
     }
   };
 
+  const renderButtonText = (rowData : any) => {
+    return rowData ? rowData : 'Selecione uma Rota'
+  };
+
+  if (loading) {
+    return <Text>Carregando Rotas...</Text>;
+  }
+
   return (
-    <Picker
-      style={{width:"100%",backgroundColor:'#FFF',opacity:.9,borderWidth: 1, borderColor: 'gray'}}
-      itemStyle={{borderWidth:10,borderColor:'red'}}
-      selectedValue={selectedOption}
-      onValueChange={(value) => onValueChange(value)}
-    >
-      {options.map((option) => (
-        <Picker.Item label={option[0]} value={option[1]} key={option[1]} />
-      ))}
-    </Picker>
+    <ModalDropdown
+      style={{
+        width: "100%",
+        backgroundColor: '#F8F7F3',
+        opacity: 0.9,
+        borderWidth: 1,
+        borderColor: 'gray',
+        padding: 10,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
+      }}
+      textStyle={{
+        color: "#FF6000"
+      }}
+      renderButtonText={(rowData) => renderButtonText(rowData)} defaultIndex={0}
+      defaultValue='Selecione uma Rota'
+      dropdownStyle={{
+        width: "95%",
+        padding: 10,
+        marginLeft: -10,
+        marginTop: 10
+      }}
+      saveScrollPosition={false}
+      options={options.map(option => option[0])}
+      onSelect={(index, value) => {
+        onValueChange(options[index][1]);
+      }}
+    />
   );
 };
 
